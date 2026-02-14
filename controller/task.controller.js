@@ -1,5 +1,6 @@
 const Task  = require("../models/task.model");
 module.exports.index = async (req, res) => {
+    console.log(req.query);
     let find = {deleted: false};
     //loc theo trang thai
     const status = req.query.status;
@@ -27,6 +28,11 @@ module.exports.index = async (req, res) => {
     initPagi.skipTask = (pageCurrent-1)*limitTask;
     const countTask = await Task.countDocuments({deleted: false});
     initPagi.totalPage = Math.ceil(countTask/initPagi.limitTask);
+    //search
+    const keyword = req.query.title;
+    if(keyword){
+        find.title = new RegExp(keyword,"i");
+    }
 
     const tasks = await Task.find(find).sort(sort).skip(initPagi.skipTask).limit(initPagi.limitTask);
     res.json(tasks)
@@ -35,4 +41,20 @@ module.exports.detail = async (req, res) => {
     const id = req.params.id;
     const tasks = await Task.findOne({_id: id,deleted: false});
     res.json(tasks)
+}
+module.exports.changeStatus = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const status = req.body.status;
+        await Task.updateOne({_id: id}, {$set: {status: status}});
+        res.json({
+            code: 200,
+            message: "Cap nhat trang thai thanh cong"
+        });
+    }catch(error){
+        res.json({
+            code: 400,
+            message: "Cap nhat trang thai that bai"
+        });
+    }
 }
