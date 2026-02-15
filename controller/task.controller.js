@@ -76,3 +76,12 @@ module.exports.changeMulti = async (req,res) => {
     }
     
 }
+module.exports.create = async (req,res) => {
+    const task = new Task(req.body);
+    await task.save();
+    res.json({
+        code: 200,
+        message: "tao thanh cong",
+        data: task
+    })
+}
