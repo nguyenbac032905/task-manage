@@ -85,3 +85,18 @@ module.exports.create = async (req,res) => {
         data: task
     })
 }
+module.exports.edit = async (req,res) => {
+    try{
+        const id = req.params.id;
+        await Task.updateOne({_id: id},req.body);
+        res.json({
+            code: 200,
+            message: "cap nhat thanh cong"
+        })
+    }catch(error){
+        res.json({
+            code: 400,
+            message: "khong tim thay san pham"
+        })
+    }
+}
