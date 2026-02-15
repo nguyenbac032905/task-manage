@@ -26,3 +26,29 @@ module.exports.register = async (req,res) => {
         })
     }
 }
+module.exports.login = async (req,res) => {
+    const email = req.body.email;
+    const password = md5(req.body.password);
+
+    const user = await User.findOne({email: email, deleted: false});
+    if(!user){
+        res.json({
+            code: 400,
+            message: "khong ton tai email"
+        });
+        return;
+    }
+    if(user.password != password){
+        res.json({
+            code: 400,
+            message: "sai mat khau"
+        });
+        return;
+    }
+    res.cookie("token", user.token);
+    res.json({
+        code: 200,
+        message: "dang nhap thanh cong",
+        user: user
+    });
+}
