@@ -68,6 +68,12 @@ module.exports.changeMulti = async (req,res) => {
                     code:200,
                     message: "cap nhat trang thai thanh cong"
                 });
+            case "delete":
+                await Task.updateMany({_id: {$in: ids}},{$set: {deleted: true, deletedAt: new Date()}});
+                res.json({
+                    code:200,
+                    message: "xoa thanh cong"
+                });
             default:
                 res.json("khong ton tai");
         }
@@ -99,4 +105,12 @@ module.exports.edit = async (req,res) => {
             message: "khong tim thay san pham"
         })
     }
+}
+module.exports.delete = async (req,res) => {
+    const id = req.params.id;
+    await Task.updateOne({_id: id}, {$set: {deleted: true,deletedAt: new Date()}});
+    res.json({
+        code: 200,
+        message: "Xoa thanh cong"
+    })
 }
