@@ -58,3 +58,21 @@ module.exports.changeStatus = async (req,res) => {
         });
     }
 }
+module.exports.changeMulti = async (req,res) => {
+    try{
+        const {ids,key,value} = req.body;
+        switch (key) {
+            case "status":
+                await Task.updateMany({_id: {$in: ids}},{$set: {status: value}});
+                res.json({
+                    code:200,
+                    message: "cap nhat trang thai thanh cong"
+                });
+            default:
+                res.json("khong ton tai");
+        }
+    }catch(error){
+        res.json("cap nhat that bai");
+    }
+    
+}
