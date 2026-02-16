@@ -83,6 +83,7 @@ module.exports.changeMulti = async (req,res) => {
     
 }
 module.exports.create = async (req,res) => {
+    req.body.createdBy = req.user.id;
     const task = new Task(req.body);
     await task.save();
     res.json({
