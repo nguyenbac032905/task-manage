@@ -101,7 +101,7 @@ module.exports.reset = async (req,res) => {
     })
 }
 module.exports.detail = async (req,res) => {
-    const token = req.cookies.token;
+    const token = req.user.token;
     const user = await User.findOne({token: token, deleted: false}).select("-password -token")
     res.json({
         code: 200,
