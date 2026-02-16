@@ -1,7 +1,13 @@
 const Task  = require("../models/task.model");
 module.exports.index = async (req, res) => {
-    console.log(req.query);
-    let find = {deleted: false};
+    const userId = req.user.id;
+    let find = {
+        deleted: false,
+        $or:[
+            {createdBy: userId},
+            {listUser: userId}
+        ]
+    };
     //loc theo trang thai
     const status = req.query.status;
     if(status){
