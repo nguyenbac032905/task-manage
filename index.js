@@ -5,6 +5,8 @@ const database = require("./config/database");
 database.connect();
 
 const app = express();
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 const port = process.env.PORT;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -13,9 +15,6 @@ routes(app);
 
 const cors = require('cors');
 app.use(cors());
-
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
